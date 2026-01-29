@@ -60,112 +60,85 @@ src/
 - models：API の request / response 型定義（バージョン管理）
 
 <details>
-<summary>ディレクトリ構成の詳細</summary>
+<summary>ディレクトリ構成の方針</summary>
 
-<h3>components（Atomic Design）</h3>
+<h3>api（API型定義）</h3>
+
+<pre><code>src/models/api/
+</code></pre>
+
+<p>
+バックエンドAPIの request / response をフロントエンド側で型として管理します。<br />
+APIのバージョン管理が発生する場合は、ディレクトリで分離します。
+</p>
+
+<hr />
+
+<h3>components（共通UIコンポーネント）</h3>
 
 <pre><code>src/components/
-├─ atoms/
-├─ molecules/
-├─ organisms/
-├─ templates/
-└─ pages/
 </code></pre>
 
 <p>
-Atomic Design の5階層（Atoms / Molecules / Organisms / Templates / Pages）を、
-React コンポーネントのディレクトリ構造に反映しています。
-</p>
-
-<ul>
-  <li>atoms：最小単位のUI（Button / Input / Badge など）</li>
-  <li>molecules：atomsの組み合わせ</li>
-  <li>organisms：意味を持つUIブロック</li>
-  <li>templates：レイアウト構造</li>
-  <li>pages：画面単位の見た目</li>
-</ul>
-
-<p>
-components は画面をまたいで使うUIの置き場です。
+画面をまたいで再利用される UI コンポーネントを配置します。<br />
+Atomic Design の考え方（Atoms / Molecules / Organisms など）を採用する場合は、
+この配下で階層化します。
 </p>
 
 <hr />
 
-<h3>features</h3>
+<h3>features（機能単位）</h3>
 
 <pre><code>src/features/
-├─ Login/
-├─ Tickets/
-├─ MyTicketDetail/
-└─ Accounts/
 </code></pre>
 
 <p>
-features は画面単位でコードをまとめるフォルダです。
+機能・ユースケース単位でコードをまとめるフォルダです。<br />
+画面、ロジック、状態管理などを機能ごとに閉じ込めます。
 </p>
 
 <hr />
 
-<h3>routes</h3>
+<h3>routes（ルーティング管理）</h3>
 
 <pre><code>src/routes/
-├─ Login
-├─ Tickets
-├─ MyTicketDetail
-├─ Accounts
-└─ Router.tsx
 </code></pre>
 
 <p>
-routes はアプリのルーティングを管理します。
+アプリ全体のルーティング定義を管理します。<br />
+URL と画面の対応関係はこのフォルダ配下で集約します。
 </p>
 
 <hr />
 
-<h3>services（通信処理）</h3>
+<h3>services（通信・外部連携）</h3>
 
 <pre><code>src/services/
-└─ internal/
 </code></pre>
 
-<ul>
-  <li>internal：バックエンドとの通信処理をまとめるフォルダ</li>
-</ul>
+<p>
+バックエンドや外部サービスとの通信処理を管理します。<br />
+API クライアントや通信ロジックはここに集約します。
+</p>
 
 <hr />
 
 <h3>share（全体共有）</h3>
 
 <pre><code>src/share/
-├─ constants/
-│  ├─ layout/
-│  └─ business/
-├─ types/
-└─ logic/
-   └─ transform/
-</code></pre>
-
-<ul>
-  <li>constants：固定値</li>
-  <li>types：複数画面で共通の型定義</li>
-  <li>logic/transform：共通の値変換ロジック</li>
-</ul>
-
-<hr />
-
-<h3>API 型定義（バージョン管理）</h3>
-
-<pre><code>src/models/api/internal/v1/
-├─ request/
-└─ response/
 </code></pre>
 
 <p>
-API の request / response をフロント側で型として管理します。
+アプリ全体で共通利用される定義を配置します。
 </p>
 
-</details>
+<ul>
+  <li>constants：固定値・定数</li>
+  <li>types：複数機能で共有する型定義</li>
+  <li>logic：共通ロジックやユーティリティ</li>
+</ul>
 
+</details>
 
 ## 前提条件
 
@@ -181,7 +154,7 @@ API の request / response をフロント側で型として管理します。
 <h3>必要な環境</h3>
 
 <ul>
-  <li>OS：macOS</li>
+  <li>OS：macOS / Windows / Linux（動作確認・手順例は macOS）</li>
   <li>Node.js：<strong>v24.12.0</strong></li>
   <li>パッケージマネージャ：Yarn</li>
 </ul>
@@ -193,6 +166,11 @@ API の request / response をフロント側で型として管理します。
 
 <p>
 以下では、<strong>nodebrew を利用して Node.js を管理する方法</strong>を例に説明します。
+</p>
+
+<p>
+Windows / Linux 環境については、各OSに適した Node.js バージョン管理ツールを使用し、
+上記と同一の Node.js バージョンを設定してください。
 </p>
 
 <hr />
