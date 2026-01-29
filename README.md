@@ -41,35 +41,35 @@
 ## ディレクトリ構成
 ```bash
 src/
-├─ components/   
-├─ features/     
-├─ routes/       
-├─ services/     
-├─ core/         
-├─ share/        
-└─ models/       
+├─ components/
+├─ core/
+├─ features/
+├─ models/
+├─ routes/
+├─ services/
+└─ share/   
 ```
 ### 主要ディレクトリの役割
 
 - components：複数画面で使い回す共通UIコンポーネント
+- core：アプリ全体の初期設定・土台となる処理
 - features：機能単位で UI / ロジック / hooks をまとめるフォルダ
+- models：アプリケーション内で使用するデータ構造を型として定義・管理
 - routes：URL パスと画面（Container）の対応関係を管理
 - services：バックエンド・外部サービスとの通信処理
-- core：アプリ全体の初期設定・土台となる処理
 - share：定数・型・共通ロジックなど、全体で共有するもの
-- models：API の request / response 型定義（バージョン管理）
 
 <details>
 <summary>ディレクトリ構成の方針</summary>
 
-<h3>api（API型定義）</h3>
+<h3>models（モデル定義）</h3>
 
-<pre><code>src/models/api/
+<pre><code>src/models/
 </code></pre>
 
 <p>
-バックエンドAPIの request / response をフロントエンド側で型として管理します。<br />
-APIのバージョン管理が発生する場合は、ディレクトリで分離します。
+アプリケーション内で使用するデータ構造を型として定義・管理します。<br />
+主にバックエンドとのデータの受け渡しや、画面表示に必要なモデルを扱います。
 </p>
 
 <hr />
@@ -80,11 +80,21 @@ APIのバージョン管理が発生する場合は、ディレクトリで分�
 </code></pre>
 
 <p>
-画面をまたいで再利用される UI コンポーネントを配置します。<br />
-Atomic Design の考え方（Atoms / Molecules / Organisms など）を採用する場合は、
-この配下で階層化します。
+画面をまたいで再利用される UI コンポーネントを配置します。
 </p>
 
+<p>
+Atomic Design の5階層（Atoms / Molecules / Organisms / Templates / Pages）を、
+React コンポーネントのディレクトリ構造に反映しています。
+</p>
+
+<ul>
+  <li>atoms：最小単位のUI（Button / Input / Badge など）</li>
+  <li>molecules：atomsの組み合わせ</li>
+  <li>organisms：意味を持つUIブロック</li>
+  <li>templates：レイアウト構造</li>
+  <li>pages：画面単位の見た目</li>
+</ul>
 <hr />
 
 <h3>features（機能単位）</h3>
@@ -94,7 +104,8 @@ Atomic Design の考え方（Atoms / Molecules / Organisms など）を採用す
 
 <p>
 機能・ユースケース単位でコードをまとめるフォルダです。<br />
-画面、ロジック、状態管理などを機能ごとに閉じ込めます。
+features 配下にはページ（画面）単位でフォルダを作成し、<br />
+各ページに関する UI、ロジック、状態管理などを機能ごとに閉じ込めます。
 </p>
 
 <hr />
