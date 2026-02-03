@@ -1,30 +1,57 @@
+# ワークフロー（GitHub Actionsの実行一式）の名前
+# Actionsタブにこの名前で表示される
 name: ci
 
+# このワークフローを「いつ」動かすか（トリガー）
 on:
+  # どのブランチでも push されたら実行（ブランチ指定もできる）
   push:
+  # PRが作成・更新されたら実行
   pull_request:
 
+# ジョブ = 同じ実行環境で動く処理のまとまり
 jobs:
+  # ジョブID（自由に命名可能）
+  # UIにもこの名前で表示される
   checks:
+    # GitHubが用意する Ubuntu の最新安定ランナー（仮想環境）で実行する
     runs-on: ubuntu-latest
+
+    # ジョブ内で順番に実行される「ステップ」一覧
     steps:
+      # GitHub上のリポジトリのコードを
+      # GitHub Actions が用意した仮想マシンにコピーしてくる
+      # これがないと package.json などのファイルが存在しない
       - uses: actions/checkout@v4
 
+      # ステップ名（ログ上で見やすくするための表示名）
       - name: Setup Node
+        # GitHub が用意してる “Node.js を用意するための部品（アクション）” を使う
         uses: actions/setup-node@v4
+        # アクションに渡す設定
         with:
-          node-version: "24.12.0"
-          cache: "yarn"
+          # yarn のキャッシュを有効化（依存関係の取得を高速化）
+          cache: 'yarn'
+          # yarn.lock をキャッシュキーに使う
+          # lockfile が変わったらキャッシュも更新される
           cache-dependency-path: yarn.lock
 
+      # 依存関係のインストール
       - name: Install deps
+        # yarn.lock 通りに厳密にインストール
+        # lockfile と差分があると失敗して、環境差異を防ぐ
         run: yarn install --frozen-lockfile
 
       - name: Lint
+        # package.json の scripts に定義された lint を実行
         run: yarn lint
 
+      # フォーマットチェック
       - name: Format check
+        # フォーマット崩れがあると exit code 1 でここで失敗する
         run: yarn format
 
+      # ユニットテストの実行
       - name: Unit tests
+        # テストが失敗するとジョブ全体も失敗になる
         run: yarn test
