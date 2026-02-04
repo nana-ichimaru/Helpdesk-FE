@@ -22,14 +22,16 @@ jobs:
       # GitHub上のリポジトリのコードを
       # GitHub Actions が用意した仮想マシンにコピーしてくる
       # これがないと package.json などのファイルが存在しない
-      - uses: actions/checkout@v4
-
+      - name: Checkout code
+        uses: actions/checkout@v6
       # ステップ名（ログ上で見やすくするための表示名）
       - name: Setup Node
         # GitHub が用意してる “Node.js を用意するための部品（アクション）” を使う
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         # アクションに渡す設定
         with:
+          # リポジトリ直下の .node-version を読んで Node.js のバージョンを固定する
+          node-version-file: ./.node-version
           # yarn のキャッシュを有効化（依存関係の取得を高速化）
           cache: 'yarn'
           # yarn.lock をキャッシュキーに使う
